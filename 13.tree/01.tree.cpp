@@ -1,5 +1,6 @@
 #include <iostream>
 #include <queue>
+#include <stack>
 
 using namespace std;
 
@@ -31,12 +32,49 @@ void BFS(Node *root) {
   }
 }
 
+// DFS Inorder using recursive
 void DFSInorder(Node *root) {
   // LEFT -> ROOT -> RIGHT
   if (root!= NULL) {
     DFSInorder(root->left);
     cout << root->key << " ";
     DFSInorder(root->right);
+  }
+}
+
+void printStack(stack<Node*>s) {
+  while (!s.empty()) {
+    Node *curNode = s.top();
+    s.pop();
+    cout << curNode->key << " ";
+  }
+  cout << endl;
+}
+
+// DFS Inorder using iterator
+void DFSInorderUsingIterator(Node *root) {
+  Node *curNode = root;
+  stack<Node*> s;
+  while (curNode != NULL) {
+    s.push(curNode);
+    curNode = curNode->left;
+  }
+
+  // printStack(s);
+
+  while (!s.empty()) {
+    Node *curNode = s.top();
+    cout << curNode->key << " ";
+    s.pop();
+    if (curNode->right != NULL) {
+      s.push(curNode->right);
+      curNode = curNode->right;
+
+      while (curNode->left != NULL) {
+        s.push(curNode->left);
+        curNode = curNode->left;
+      }
+    }
   }
 }
 
@@ -49,6 +87,26 @@ void DFSPreorder(Node *root) {
   }
 }
 
+
+// DFS Inorder using iterator
+void DFSPreorderUsingIterator(Node *root) {
+  stack<Node*> s;
+  s.push(root);
+
+  while(!s.empty()) {
+    Node *curNode = s.top();
+    s.pop();
+    cout << curNode->key << " ";
+
+    if (curNode->right != NULL) {
+      s.push(curNode->right);
+    }
+    if (curNode->left != NULL) {
+      s.push(curNode->left);
+    }
+  }
+}
+
 void DFSPostorder(Node *root) {
   // LEFT -> RIGHT -> ROOT
   if (root != NULL) {
@@ -56,6 +114,42 @@ void DFSPostorder(Node *root) {
     DFSPostorder(root->right);
     cout << root->key << " ";
   }
+}
+
+void DFSPostorderUsingIterator(Node *root) {
+  stack<Node*> revertOrder;
+  stack<Node*> s;
+
+  Node* curNode = root;
+  while (curNode != NULL) {
+    revertOrder.push(curNode);
+    s.push(curNode);
+    curNode = curNode->right;
+  }
+
+  while (!s.empty()) {
+    curNode = s.top();
+    s.pop();
+
+    if (curNode->left != NULL) {
+      revertOrder.push(curNode->left);
+      s.push(curNode->left);
+      curNode = curNode->left;
+
+      while (curNode->right != NULL) {
+        revertOrder.push(curNode->right);
+        s.push(curNode->right);
+        curNode = curNode->right;
+      }
+    }
+  }
+
+  while (!revertOrder.empty()) {
+    curNode = revertOrder.top();
+    revertOrder.pop();
+    cout << curNode->key << " ";
+  }
+  cout << endl;
 }
 
 int height(Node *root) {
@@ -119,6 +213,8 @@ int main() {
             40 50   60
                /\
              70 80
+                 \
+                 90
   */
   Node *root = new Node(10);
   root->left = new Node(20);
@@ -127,6 +223,7 @@ int main() {
   root->left->right = new Node(50);
   root->left->right->left = new Node(70);
   root->left->right->right = new Node(80);
+  root->left->right->right->right = new Node(90);
   root->right->right = new Node(60);
 
   cout << "BFS" << endl;
@@ -180,6 +277,18 @@ int main() {
 
   cout << "Max: ";
   cout << getMax(root) << endl;
+
+  cout << "DFS inorder using iterator" << endl;
+  DFSInorderUsingIterator(root);
+  cout << endl;
+
+  cout << "DFS preorder using iterator" << endl;
+  DFSPreorderUsingIterator(root);
+  cout << endl;
+
+  cout << "DFS postorder using iterator" << endl;
+  DFSPostorderUsingIterator(root);
+  cout << endl;
   return 0;
 }
 
