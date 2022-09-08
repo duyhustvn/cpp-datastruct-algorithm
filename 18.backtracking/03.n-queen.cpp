@@ -16,60 +16,43 @@ void resetChessBoard(int chessBoard[N][N]) {
 }
 
 bool isSafe(int chessBoard[N][N], int row, int col) {
-  return (chessBoard[row][col] != 2);
-}
-
-void setUnavailableSlot(int chessBoard[N][N], int row, int col) {
-  // set for row
-  for (int i = 0; i < N; i++) {
-    if (i != col) {
-      chessBoard[row][i] = 2;
+  // check if column have queen
+  for (int i = 0; i < row; i++) {
+    if (chessBoard[i][col] == 1) {
+      return false;
     }
   }
 
-  // set for column
-  for (int i = 0; i < N; i++) {
-    if (i != row) {
-      chessBoard[i][col] = 2;
-
-      int leftSmalTriCol = col - (i-row);
-      if (0 <= leftSmalTriCol && leftSmalTriCol < N) {
-        chessBoard[i][leftSmalTriCol] = 2;
-      }
-
-      int rightSmallTriCol = col + (i-row);
-      if (0 <= rightSmallTriCol && rightSmallTriCol < N) {
-        chessBoard[i][rightSmallTriCol] = 2;
-      }
+  // check for left diagonal
+  for (int i = row, j = col; i >=0 && j >= 0; i--, j--) {
+    if (chessBoard[i][j] == 1) {
+      return false;
     }
   }
 
-  cout << "row: " << row << " col: " << col << endl;
-  printChessBoard(chessBoard);
-  cout << endl << endl;
+  // check for right diagonal
+  for (int i = row, j = col; i >= 0 && j >= 0 && j < N; i--, j++) {
+    if (chessBoard[i][j] == 1) {
+      return false;
+    }
+  }
+  return true;
 }
 
 bool solveNQueenRec(int chessBoard[N][N], int curRow) {
-  if (curRow == N-1) {
-    for (int i = 0; i < N; i++) {
-      if (chessBoard[curRow][i] == 0) {
-        chessBoard[curRow][i] = 1;
-        return true;
-      }
-    }
-    return false;
+  if (curRow == N) {
+    return true;
   }
-  for (int i = 0; i < N; i++) {
-    if (curRow == 0) {
-      resetChessBoard(chessBoard);
-    }
 
+  for (int i = 0; i < N; i++) {
     if (isSafe(chessBoard, curRow, i)) {
       chessBoard[curRow][i] = 1;
-      setUnavailableSlot(chessBoard, curRow, i);
+      cout << "curRow: " << curRow << " curCol: " << i << endl;
+      printChessBoard(chessBoard);
       if (solveNQueenRec(chessBoard, curRow+1)) {
         return true;
       }
+      chessBoard[curRow][i] = 0;
     }
   }
   return false;
@@ -86,6 +69,7 @@ void printChessBoard(int chessBoard[N][N]) {
 
 bool solveNQueen() {
   int chessBoard[N][N];
+  resetChessBoard(chessBoard);
   bool isPossible = solveNQueenRec(chessBoard, 0);
   cout << "Final result: " << endl;
   printChessBoard(chessBoard);
