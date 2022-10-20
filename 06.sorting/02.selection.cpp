@@ -5,12 +5,6 @@ using namespace std;
 class Solution
 {
     public:
-    void swap(int arr[], int i, int j) {
-      int temp = arr[i];
-      arr[i] = arr[j];
-      arr[j] = temp;
-    }
-
     void selectionSort(int arr[], int n)
     {
        for (int i = 0; i < n; i++) {
@@ -25,7 +19,7 @@ class Solution
         }
 
         if (minIndex != i) {
-          swap(arr, i, minIndex);
+          swap(arr[i], arr[minIndex]);
         }
       }
 
