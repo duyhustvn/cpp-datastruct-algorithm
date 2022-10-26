@@ -49,7 +49,7 @@ class Solution {
     }
   }
 
-  void lomutoPartition(int arr[], int l, int h) {
+  int lomutoPartition(int arr[], int l, int h) {
     int pivot = arr[h];
     int i = l - 1;
     for (int j = l; j <= h-1; j++) {
@@ -60,6 +60,39 @@ class Solution {
     }
 
     swap(arr[i+1], arr[h]);
+    return i+1;
+  }
+
+  int hoarePartition(int arr[], int l, int h)
+  {
+    int pivot=arr[l];
+    int i=l-1,j=h+1;
+    while(true){
+      do{
+        i++;
+      }while(arr[i]<pivot);
+      do{
+        j--;
+      }while(arr[j]>pivot);
+      if(i>=j)return j;
+      swap(arr[i],arr[j]);
+    }
+  }
+
+  void quickSortUsingLomutoPartition(int arr[], int l, int h) {
+    if (l < h) {
+      int pivotIndex = lomutoPartition(arr, l, h);
+      quickSortUsingLomutoPartition(arr, l, pivotIndex-1);
+      quickSortUsingLomutoPartition(arr, pivotIndex+1, h);
+    }
+  }
+
+  void quickSortUsingHoarePartition(int arr[], int l, int h) {
+    if (l < h) {
+      int pivotIndex = hoarePartition(arr, l, h);
+      quickSortUsingHoarePartition(arr, l, pivotIndex-1);
+      quickSortUsingHoarePartition(arr, pivotIndex, h);
+    }
   }
 };
 
@@ -73,8 +106,26 @@ int main() {
 
   int arr1[] = {10, 5, 2, 6, 8, 7, 3, 6, 6};
   int n1 = sizeof(arr1)/sizeof(arr1[0]);
-  s->lomutoPartition(arr1, 0, n1-1);
+  int pivotIndex = s->lomutoPartition(arr1, 0, n1-1);
+  cout << "pivot index: " << pivotIndex << endl;
   printArray(arr1, n1);
+
+  cout << "Before quick sort: ";
+  int arr2[] = {10, 5, 2, 6, 8, 7, 3, 6, 6};
+  int n2 = sizeof(arr2)/sizeof(arr2[0]);
+  printArray(arr2, n2);
+  s->quickSortUsingLomutoPartition(arr2, 0, n2-1);
+  cout << "After quick sort:  ";
+  printArray(arr2, n2);
+
+  cout << "Before quick sort: ";
+  int arr3[] = {10, 5, 2, 6, 8, 7, 3, 6, 6};
+  int n3 = sizeof(arr3)/sizeof(arr3[0]);
+  printArray(arr3, n3);
+  s->quickSortUsingLomutoPartition(arr3, 0, n3-1);
+  cout << "After quick sort:  ";
+  printArray(arr3, n3);
+
 
   return 0;
 }
