@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -39,4 +40,38 @@ void insert(TrieNode *root, string s) {
     cur = cur->child[index];
   }
   cur->isEnd = true;
+}
+
+bool hasChild(TrieNode *cur) {
+  for (int i = 0; i < 26; i++) {
+    if (cur->child[i] != NULL) {
+      return true;
+    }
+  }
+  return false;
+}
+
+TrieNode* del(TrieNode *root, string s, int index) {
+  if (root == NULL) {
+    return NULL;
+  }
+
+  if (index == s.size()) {
+    root->isEnd = false;
+    if (!hasChild(root)) {
+      delete(root);
+      return NULL;
+    }
+    return root;
+  }
+
+  int i = s[index] - 'a';
+  root->child[i] = del(root->child[i], s, index+1);
+
+  if (!hasChild(root) && !root->isEnd) {
+    delete(root);
+    return NULL;
+  }
+
+  return root;
 }

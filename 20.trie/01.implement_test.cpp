@@ -48,6 +48,52 @@ TEST(TestSearch, Search) {
   ASSERT_EQ(search(root, "ba"), true);
 }
 
+TEST(TestDel, Delete) {
+  TrieNode *root = new TrieNode();
+  insert(root, "bac");
+  del(root, "ba", 0);
+  ASSERT_NE(root->child[1]->child[0]->child[2], nullptr);
+  ASSERT_EQ(root->child[1]->child[0]->child[2]->isEnd, true);
+  ASSERT_EQ(root->child[1]->child[0]->isEnd, false);
+
+
+  insert(root, "ba");
+  ASSERT_EQ(root->child[1]->child[0]->isEnd, true);
+  ASSERT_EQ(root->child[1]->child[0]->child[2]->isEnd, true);
+
+  del(root, "ba", 0);
+  ASSERT_EQ(root->child[1]->child[0]->isEnd, false);
+  ASSERT_EQ(root->child[1]->child[0]->child[2]->isEnd, true);
+}
+
+TEST(TestDel, DeleteWholeBranch) {
+  TrieNode *root = new TrieNode();
+  insert(root, "bac");
+  ASSERT_NE(root->child[1], nullptr);
+  root = del(root, "bac", 0);
+  ASSERT_EQ(root, nullptr);
+}
+
+TEST(TestDel, DeleteLongerWord) {
+  TrieNode *root = new TrieNode();
+  insert(root, "ab");
+  insert(root, "abcd");
+  ASSERT_NE(root->child[0]->child[1]->child[2], nullptr);
+  del(root, "abcd", 0);
+  ASSERT_EQ(root->child[0]->child[1]->child[2], nullptr);
+}
+
+TEST(TestDel, DeleteAtCrossRoad) {
+  TrieNode *root = new TrieNode();
+  insert(root, "abef");
+  insert(root, "abcd");
+  ASSERT_NE(root->child[0]->child[1]->child[2], nullptr);
+  del(root, "abcd", 0);
+  ASSERT_EQ(root->child[0]->child[1]->child[2], nullptr);
+}
+
+
+
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
 
