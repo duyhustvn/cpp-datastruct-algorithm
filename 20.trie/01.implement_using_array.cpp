@@ -4,7 +4,7 @@
 using namespace std;
 
 struct TrieNode {
-  TrieNode *child[26];
+  TrieNode* child[26];
   bool isEnd;
 
   TrieNode() {
