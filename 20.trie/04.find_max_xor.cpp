@@ -1,5 +1,6 @@
 // https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/
 #include <iostream>
+#include <unordered_map>
 
 using namespace std;
 
@@ -17,10 +18,13 @@ class RST {
     friend class RSTTest;
     FRIEND_TEST(RSTTest, MethodConvertToBinary);
     FRIEND_TEST(RSTTest, MethodInsert);
+    FRIEND_TEST(RSTTest, MethodGetMaxXOR);
+    FRIEND_TEST(RSTTest, MethodFindMaximumXOR);
 
     private:
     RSTNode *root;
     int maxLengthBinary; // number of bit of max number in vector
+    unordered_map<int, string> mapNumToBinary;
 
     void setMaxLengthBinary(int v) {
         maxLengthBinary = v;
@@ -77,6 +81,7 @@ class RST {
 
     void insert(int v) {
         string binaryForm = convertToBinary(v, maxLengthBinary);
+        mapNumToBinary[v] = binaryForm;
         RSTNode *cur = root;
         for (int i = 0; i < binaryForm.size(); i++) {
             int index = binaryForm[i] - '0';
@@ -89,6 +94,26 @@ class RST {
         cur->val = v;
     }
 
+    int getMaxXOR(int v) {
+        RSTNode *cur = root;
+        string binaryForm = mapNumToBinary[v];
+        for (int i = 0; i < binaryForm.size(); i++) {
+            int index = binaryForm[i] - '0';
+            int expectedIndex = 1 - index;
+            if (cur->child[expectedIndex] != NULL) {
+                cur = cur->child[expectedIndex];
+            } else if (cur->child[index] != NULL) {
+                cur = cur->child[index];
+            } else {
+                return cur->val;
+            }
+        }
+        if (cur != NULL) {
+            return cur->val;
+        }
+        return -1;
+    }    
+
     int findMaximumXOR(vector<int>& nums) {
         int maxValue = getMaxNumber(nums);
         string maxValueInBinary = convertToBinary(maxValue);
@@ -97,6 +122,12 @@ class RST {
         for (int i = 0; i < nums.size(); i++) {
             insert(nums[i]);
         }
-        return 1;
+
+        int maxXor = INT_MIN;
+        for (int i = 0; i < nums.size(); i++) {
+            int foundNumber = getMaxXOR(nums[i]);
+            maxXor = max(foundNumber ^ nums[i], maxXor);
+        }
+        return maxXor;
     }
 };

@@ -47,7 +47,39 @@ TEST_F(RSTTest, MethodInsert) {
     ASSERT_NE(rst->getRootNode()->child[0], nullptr);
     ASSERT_NE(rst->getRootNode()->child[0]->child[0], nullptr);
     ASSERT_NE(rst->getRootNode()->child[0]->child[0]->child[1], nullptr);
+    ASSERT_EQ(rst->getRootNode()->child[0]->child[0]->child[1]->val, 1);
+
+
+    ASSERT_EQ(rst->getRootNode()->child[0]->child[1], nullptr);
+    rst->insert(2); // Insert 010
+    ASSERT_NE(rst->getRootNode()->child[0], nullptr);
+    ASSERT_NE(rst->getRootNode()->child[0]->child[1], nullptr);
+    ASSERT_NE(rst->getRootNode()->child[0]->child[1]->child[0], nullptr);
+    ASSERT_EQ(rst->getRootNode()->child[0]->child[1]->child[0]->val, 2);
 }
+
+TEST_F(RSTTest, MethodGetMaxXOR) {
+    RST *rst = new RST();
+    int arr[] = {3,10,5,25,2,8}; // 25 -> 11001
+    rst->setMaxLengthBinary(5);
+    for (int i = 0; i < 6; i++) {
+      rst->insert(arr[i]);
+    }
+
+    ASSERT_EQ(rst->getMaxXOR(5), 25);
+    ASSERT_EQ(rst->getMaxXOR(25), 5);
+}
+
+TEST_F(RSTTest, MethodFindMaximumXOR) {
+    RST *rst = new RST();
+    vector<int> nums{3,10,5,25,2,8}; // 25 -> 11001
+
+    ASSERT_EQ(rst->findMaximumXOR(nums), 28);
+
+    vector<int> nums1{14,70,53,83,49,91,36,80,92,51,66,70};
+    ASSERT_EQ(rst->findMaximumXOR(nums1), 127);
+}
+
 
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
