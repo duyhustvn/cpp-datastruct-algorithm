@@ -131,3 +131,60 @@ class RST {
         return maxXor;
     }
 };
+
+class Solution {
+    private:
+    RSTNode *root;
+    public:
+    Solution() {
+        root = new RSTNode();
+    }
+
+    // it is the same with insert but optimization version
+    void insert(int v) {
+        RSTNode *cur = root;
+
+        RSTNode *newNode;
+        for (int i = 31; i >= 0; i--) {
+            int bit = (v >> i) & 1;
+            if (cur->child[bit] == NULL) {
+                newNode = new RSTNode();
+                cur->child[bit] = newNode;
+            }
+            cur = cur->child[bit];
+        }
+        cur->val = v;
+    } 
+
+    int getMaxXOR(int v) {
+        RSTNode *cur = root;
+        for (int i = 31; i >= 0; i--) {
+            int bit = (v >> i) & 1;
+            int expectedIndex = 1 - bit;
+            if (cur->child[expectedIndex] != NULL) {
+                cur = cur->child[expectedIndex];
+            } else if (cur->child[bit] != NULL) {
+                cur = cur->child[bit];
+            } else {
+                return cur->val;
+            }
+        }
+        if (cur != NULL) {
+            return cur->val;
+        }
+        return -1;
+    }
+
+    int findMaximumXOR(vector<int>& nums) {
+        for (int i = 0; i < nums.size(); i++) {
+            insert(nums[i]);
+        }
+
+        int maxXor = INT_MIN;
+        for (int i = 0; i < nums.size(); i++) {
+            int foundNumber = getMaxXOR(nums[i]);
+            maxXor = max(foundNumber ^ nums[i], maxXor);
+        }
+        return maxXor;
+    }
+};
