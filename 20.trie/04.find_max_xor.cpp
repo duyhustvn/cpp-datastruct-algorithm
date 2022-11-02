@@ -70,13 +70,13 @@ class RST {
         return result;
     }
 
+    RSTNode* getRootNode() {
+        return root;
+    }
+
     public:
     RST() {
         root = new RSTNode();
-    }
-
-    RSTNode* getRootNode() {
-        return root;
     }
 
     void insert(int v) {
