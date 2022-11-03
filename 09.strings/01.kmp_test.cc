@@ -18,6 +18,11 @@ TEST_F(KMPTest, MethodComputeLPSArray) {
     vector<DataTest> tests{
         {"abacabad", {0,0,1,0,1,2,3,0}},
         {"abbabb", {0,0,0,1,2,3}},
+        {"AAAA", {0,1,2,3}},
+        {"ABCDE", {0,0,0,0,0}},
+        {"AABAACAABAA", {0,1,0,1,2,0,1,2,3,4,5}},
+        {"AAACAAAAAC", {0, 1, 2, 0, 1, 2, 3, 3, 3, 4}},
+        {"AAABAAA", {0, 1, 2, 0, 1, 2, 3}},
     };
 
     KMP *kmp = new KMP();
