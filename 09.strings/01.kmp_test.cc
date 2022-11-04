@@ -30,6 +30,10 @@ TEST_F(KMPTest, MethodComputeLPSArray) {
     for (auto test: tests) {
         actualLPS = kmp->computeLPSArray(test.input);
         ASSERT_EQ(actualLPS, test.expectedLPS);
+
+
+        actualLPS = kmp->computeLPSArrayBruteForce(test.input);
+        ASSERT_EQ(actualLPS, test.expectedLPS);
     }
 }
 

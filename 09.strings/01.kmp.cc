@@ -8,7 +8,7 @@ class KMP {
     FRIEND_TEST(KMPTest, MethodComputeLPSArray);
 
     private:
-    vector<int> computeLPSArray(string pat) {
+    vector<int> computeLPSArrayBruteForce(string pat) {
         vector<int> lsp;
 
         lsp.push_back(0);
@@ -36,5 +36,28 @@ class KMP {
         }
         
         return lsp;
+    }
+
+    vector<int> computeLPSArray(string pat) {
+        int n = pat.size();
+        int i = 1, len = 0;
+        vector<int> lps{0};
+
+        while (i < n) {
+            if (pat[i] == pat[len]) {
+                lps.push_back(len+1);
+                len++;
+                i++;
+            } else {
+                if (len == 0) {
+                    lps.push_back(0);
+                    i++;
+                } else {
+                    len = lps[len-1];
+                }
+            }
+        }
+
+        return lps;
     }
 };
