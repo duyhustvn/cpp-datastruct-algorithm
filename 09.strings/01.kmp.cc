@@ -60,4 +60,32 @@ class KMP {
 
         return lps;
     }
+
+    public: 
+    // find the index of pat in txt
+    vector<int> find(string txt, string pat) {
+        int N=txt.size();
+        int M=pat.size();
+        vector<int> result;
+    
+        vector<int> lps = computeLPSArray(pat);
+    
+        int i=0,j=0;
+        while(i<N){
+            if(pat[j]==txt[i]){i++;j++;}
+
+            if (j == M) { 
+                // printf("Found pattern at index %d ", i - j);
+                result.push_back(i-j);
+                j = lps[j - 1]; 
+            } 
+            else if (i < N && pat[j] != txt[i]) { 
+                if (j == 0) 
+                    i++;
+                else
+                    j = lps[j - 1];  
+            }
+        }
+        return result;
+    }
 };

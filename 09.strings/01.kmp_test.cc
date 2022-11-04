@@ -37,6 +37,25 @@ TEST_F(KMPTest, MethodComputeLPSArray) {
     }
 }
 
+TEST_F(KMPTest, MethodKmp) {
+    struct DataTest {
+        string txt; // source string
+        string ptn; // pattern
+        vector<int> expectedIndexs;
+    };
+    vector<DataTest> tests{
+        {"aabaacaadaabaaba", "aaaab", {}},
+        {"aabaacaadaabaaba", "caada", {5}},
+        {"THIS IS A TEST TEST TEXT TEST", "TEST", {10, 15, 25}}
+    };
+    KMP *kmp = new KMP();
+    vector<int> actualIndexs;
+    for (auto test: tests) {
+        actualIndexs = kmp->find(test.txt, test.ptn);
+        ASSERT_EQ(actualIndexs, test.expectedIndexs);
+    }
+}
+
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
 
