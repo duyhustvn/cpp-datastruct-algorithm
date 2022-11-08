@@ -28,6 +28,8 @@ TEST_F(UnDirectedGraphTest, MethodAdd) {
   adj = graph->getAdj();
   ASSERT_EQ(adj[1][1], 3);
   ASSERT_EQ(adj[3][0], 1);
+
+  graph->printGraph(5);
 }
 
 int main(int argc, char **argv) {

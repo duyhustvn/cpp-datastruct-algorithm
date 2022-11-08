@@ -30,6 +30,7 @@ class UnDirectedGraph {
 
   void printGraph(int V) {
     for (int i = 0; i < V; i++) {
+      cout << i << ": ";
       for (auto e: adj[i]) {
         cout << e << " ";
       }
