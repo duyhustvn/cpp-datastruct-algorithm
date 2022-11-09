@@ -115,4 +115,53 @@ class UnDirectedGraph {
     return result;
   }
 
+
+  bool IsCycleConnectedGraph(int source, int V, vector<bool> &visited, vector<int> &result) {
+    deque<int> q;
+    q.push_back(source);
+    visited[source] = true;
+    unordered_map<string, bool> edges;
+    int countVertex = 0;
+
+    int curVertex;
+    while (!q.empty()) {
+      curVertex = q.front();
+      result.push_back(curVertex);
+      q.pop_front();
+      countVertex++;
+
+      vector<int> neighbors = adj[curVertex];
+      for (auto neighbor: neighbors) {
+        // not visited
+        string edge = curVertex > neighbor ? to_string(curVertex) + to_string(neighbor) : to_string(neighbor) + to_string(curVertex);
+        edges[edge] = true;
+
+        if (!visited[neighbor]) {
+          visited[neighbor] = true;
+          q.push_back(neighbor);
+
+        }
+      }
+    }
+
+    return countVertex == edges.size();
+  }
+
+  bool IsCycle(int V) {
+    vector<int> result;
+    vector<bool> visited; // is the vetex added to the queue
+    for (int i = 0; i < V; i++) {
+      visited.push_back(false);
+    }
+    bool isContainCycle = false;
+    for (int i = 0; i < V; i++) {
+      if (visited[i] == false) {
+        isContainCycle = IsCycleConnectedGraph(i, V, visited, result);
+        if (isContainCycle) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 };

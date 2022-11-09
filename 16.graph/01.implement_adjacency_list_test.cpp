@@ -146,6 +146,81 @@ TEST_F(UnDirectedGraphTest, MethodDFS) {
   ASSERT_EQ(realResult, expectedResult);
 }
 
+TEST_F(UnDirectedGraphTest, MethodIsCycle) {
+  UnDirectedGraph *graph;
+  bool realResult;
+  bool expectedResult;
+
+  int V;
+
+  V = 9;
+  graph = new UnDirectedGraph(V);
+  //        0              3
+  //       / \            / \
+  //      1   2          5   6
+  //       \ /
+  //        4          7-8
+  graph->add(0,1);
+  graph->add(0,2);
+  graph->add(1,4);
+  graph->add(2,4);
+  graph->add(3,5);
+  graph->add(3,6);
+  graph->add(5,3);
+  graph->add(7,8);
+
+  // graph->printGraph(6);
+  realResult = graph->IsCycle(V);
+
+  expectedResult = true;
+  ASSERT_EQ(realResult, expectedResult);
+
+  V = 9;
+  graph = new UnDirectedGraph(V);
+  //        0              3
+  //       / \            / \
+  //      1   2          5   6
+  //         /
+  //        4          7-8
+  graph->add(0,1);
+  graph->add(0,2);
+  graph->add(2,4);
+  graph->add(3,5);
+  graph->add(3,6);
+  graph->add(5,3);
+  graph->add(7,8);
+
+  // graph->printGraph(6);
+  realResult = graph->IsCycle(V);
+
+  expectedResult = false;
+  ASSERT_EQ(realResult, expectedResult);
+
+
+  V = 9;
+  graph = new UnDirectedGraph(V);
+  //        0              3
+  //       / \            / \
+  //      1   2          5 - 6
+  //         /
+  //        4          7-8
+  graph->add(0,1);
+  graph->add(0,2);
+  graph->add(2,4);
+  graph->add(3,5);
+  graph->add(3,6);
+  graph->add(5,6);
+  graph->add(5,3);
+  graph->add(7,8);
+
+  // graph->printGraph(6);
+  realResult = graph->IsCycle(V);
+
+  expectedResult = true;
+  ASSERT_EQ(realResult, expectedResult);
+}
+
+
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
 
