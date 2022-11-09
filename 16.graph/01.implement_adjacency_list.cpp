@@ -48,41 +48,53 @@ class UnDirectedGraph {
     vector<int> result;
     deque<int> q;
     q.push_back(source);
-    unordered_map<int, bool> visited; // is the vetex added to the queue
+    vector<bool> visited; // is the vetex added to the queue
     for (int i = 0; i < V; i++) {
-      visited[i] = false;
+      visited.push_back(false);
     }
 
     visited[source] = true;
 
-    int curVertex;
-    bool finished = false;
-    while (!finished) {
-      while (!q.empty()) {
-        curVertex = q.front();
-        result.push_back(curVertex);
-        q.pop_front();
+     int curVertex;
+     bool finished = false;
+     while (!finished) {
+       while (!q.empty()) {
+         curVertex = q.front();
+         result.push_back(curVertex);
+         q.pop_front();
 
-        vector<int> neighbors = adj[curVertex];
-        for (auto neighbor: neighbors) {
-          // not visited
-          if (!visited[neighbor]) {
-            visited[neighbor] = true;
-            q.push_back(neighbor);
+         vector<int> neighbors = adj[curVertex];
+         for (auto neighbor: neighbors) {
+           // not visited
+           if (!visited[neighbor]) {
+             visited[neighbor] = true;
+             q.push_back(neighbor);
 
-          }
-        }
-      }
+           }
+         }
+       }
 
-      finished = true;
-      for (auto e: visited) {
-        if (e.second == false) {
-          q.push_back(e.first);
-          finished = false;
-          break;
-        }
+       finished = true;
+       for (int i = 0; i < V; i++) {
+         if (visited[i] == false) {
+           visited[i] = true;
+           q.push_back(i);
+           finished = false;
+           break;
+         }
+       }
+     }
+    return result;
+  }
+
+  void DFS(int source, int V, unordered_map<int, bool> &visited, vector<int> &result) {
+    visited[source] = true;
+    result.push_back(source);
+    vector<int> neighbors = adj[source];
+    for (auto neighbor: neighbors) {
+      if (!visited[neighbor]) {
+        DFS(neighbor, V, visited, result);
       }
     }
-    return result;
   }
 };

@@ -85,8 +85,8 @@ TEST_F(UnDirectedGraphTest, MethodBFSOnDisConnectedGraph) {
   UnDirectedGraph *graph;
   vector<int> realResult;
   vector<int> expectedResult;
-
-  graph = new UnDirectedGraph(9);
+  int V = 9;
+  graph = new UnDirectedGraph(V);
   //        0              3
   //       / \            / \
   //      1   2          5   6
@@ -102,11 +102,46 @@ TEST_F(UnDirectedGraphTest, MethodBFSOnDisConnectedGraph) {
   graph->add(7,8);
 
   // graph->printGraph(6);
-  realResult = graph->BFS(0, 9);
+  realResult = graph->BFS(0, V);
 
   expectedResult = {0,1,2,4,3,5,6,7,8};
+  ASSERT_EQ(realResult, expectedResult);
 }
 
+TEST_F(UnDirectedGraphTest, MethodDFS) {
+  UnDirectedGraph *graph;
+  vector<int> realResult;
+  vector<int> expectedResult;
+  unordered_map<int, bool> visited;
+
+  graph = new UnDirectedGraph(7);
+  //        0
+  //       / \
+  //      1   4
+  //      |  / \
+  //      2 5 - 6
+  //      |
+  //      3
+  graph->add(0,1);
+  graph->add(0,4);
+  graph->add(1,2);
+  graph->add(2,3);
+  graph->add(4,5);
+  graph->add(4,6);
+  graph->add(5,6);
+
+
+
+  for (int i = 0; i < 7; i++) {
+    visited[i] = false;
+  }
+
+  graph->DFS(0, 7, visited, realResult);
+  expectedResult = {0,1,2,3,4,5,6};
+
+  ASSERT_EQ(realResult, expectedResult);
+
+}
 
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
