@@ -87,14 +87,31 @@ class UnDirectedGraph {
     return result;
   }
 
-  void DFS(int source, int V, unordered_map<int, bool> &visited, vector<int> &result) {
+  void DFSConnectedGraph(int source, int V, vector<bool> &visited, vector<int> &result) {
     visited[source] = true;
     result.push_back(source);
     vector<int> neighbors = adj[source];
     for (auto neighbor: neighbors) {
       if (!visited[neighbor]) {
-        DFS(neighbor, V, visited, result);
+        DFSConnectedGraph(neighbor, V, visited, result);
       }
     }
   }
+
+  vector<int> DFS(int source, int V) {
+    vector<bool> visited;
+    for (int i = 0; i < V; i++) {
+      visited.push_back(false);
+    }
+
+    vector<int> result;
+    DFSConnectedGraph(source, V, visited, result);
+    for (int i = 0; i < V; i++) {
+      if (!visited[i]) {
+        DFSConnectedGraph(i, V, visited, result);
+      }
+    }
+    return result;
+  }
+
 };

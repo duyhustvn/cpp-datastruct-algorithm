@@ -113,11 +113,11 @@ TEST_F(UnDirectedGraphTest, MethodDFS) {
   vector<int> realResult;
   vector<int> expectedResult;
   unordered_map<int, bool> visited;
-
-  graph = new UnDirectedGraph(7);
-  //        0
-  //       / \
-  //      1   4
+  int V = 10;
+  graph = new UnDirectedGraph(V);
+  //        0                 7
+  //       / \               / \
+  //      1   4             8   9
   //      |  / \
   //      2 5 - 6
   //      |
@@ -129,18 +129,21 @@ TEST_F(UnDirectedGraphTest, MethodDFS) {
   graph->add(4,5);
   graph->add(4,6);
   graph->add(5,6);
+  graph->add(7,8);
+  graph->add(7,9);
 
 
-
-  for (int i = 0; i < 7; i++) {
-    visited[i] = false;
-  }
-
-  graph->DFS(0, 7, visited, realResult);
-  expectedResult = {0,1,2,3,4,5,6};
-
+  realResult = graph->DFS(0, V);
+  expectedResult = {0,1,2,3,4,5,6,7,8,9};
   ASSERT_EQ(realResult, expectedResult);
 
+  realResult = graph->DFS(2, V);
+  expectedResult = {2,1,0,4,5,6,3,7,8,9};
+  ASSERT_EQ(realResult, expectedResult);
+
+  realResult = graph->DFS(4, V);
+  expectedResult = {4,0,1,2,3,5,6,7,8,9};
+  ASSERT_EQ(realResult, expectedResult);
 }
 
 int main(int argc, char **argv) {
