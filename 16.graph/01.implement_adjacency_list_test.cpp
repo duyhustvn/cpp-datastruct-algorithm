@@ -32,7 +32,7 @@ TEST_F(UnDirectedGraphTest, MethodAdd) {
   graph->printGraph(5);
 }
 
-TEST_F(UnDirectedGraphTest, MethodBFS) {
+TEST_F(UnDirectedGraphTest, MethodBFSOnConnectedGraph) {
   UnDirectedGraph *graph;
   vector<int> realResult;
   vector<int> expectedResult;
@@ -47,7 +47,7 @@ TEST_F(UnDirectedGraphTest, MethodBFS) {
   graph->add(4,5);
 
   // graph->printGraph(6);
-  realResult = graph->BFS(0);
+  realResult = graph->BFS(0, 6);
 
   expectedResult = {0,1,2,5,3,4};
   ASSERT_EQ(realResult, expectedResult);
@@ -61,25 +61,52 @@ TEST_F(UnDirectedGraphTest, MethodBFS) {
   graph->add(2,4);
   graph->add(3,4);
 
-  realResult = graph->BFS(0);
+  realResult = graph->BFS(0, 5);
   expectedResult = {0,1,2,3,4};
   ASSERT_EQ(realResult, expectedResult);
 
 
-  realResult = graph->BFS(2);
+  realResult = graph->BFS(2, 5);
   expectedResult = {2,0,1,3,4};
   ASSERT_EQ(realResult, expectedResult);
 
 
-  realResult = graph->BFS(1);
+  realResult = graph->BFS(1, 5);
   expectedResult = {1,0,2,3,4};
   ASSERT_EQ(realResult, expectedResult);
 
 
-  realResult = graph->BFS(4);
+  realResult = graph->BFS(4, 5);
   expectedResult = {4,2,3,0,1};
   ASSERT_EQ(realResult, expectedResult);
 }
+
+TEST_F(UnDirectedGraphTest, MethodBFSOnDisConnectedGraph) {
+  UnDirectedGraph *graph;
+  vector<int> realResult;
+  vector<int> expectedResult;
+
+  graph = new UnDirectedGraph(9);
+  //        0              3
+  //       / \            / \
+  //      1   2          5   6
+  //       \ /
+  //        4          7-8
+  graph->add(0,1);
+  graph->add(0,2);
+  graph->add(1,4);
+  graph->add(2,4);
+  graph->add(3,5);
+  graph->add(3,6);
+  graph->add(5,3);
+  graph->add(7,8);
+
+  // graph->printGraph(6);
+  realResult = graph->BFS(0, 9);
+
+  expectedResult = {0,1,2,4,3,5,6,7,8};
+}
+
 
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
