@@ -21,6 +21,10 @@ class UnDirectedGraph {
     return adj;
   }
 
+  void setAdj(vector<vector<int>> adjacencyList) {
+    adj = adjacencyList;
+  }
+
 
   public:
   UnDirectedGraph(int V) {
@@ -44,46 +48,43 @@ class UnDirectedGraph {
     }
   }
 
-  vector<int> BFS(int source, int V) {
-    vector<int> result;
+  void BFSConnectedGraph(int source, int V, vector<bool> &visited, vector<int> &result) {
     deque<int> q;
     q.push_back(source);
+    visited[source] = true;
+
+    int curVertex;
+    while (!q.empty()) {
+      curVertex = q.front();
+      result.push_back(curVertex);
+      q.pop_front();
+
+      vector<int> neighbors = adj[curVertex];
+      for (auto neighbor: neighbors) {
+        // not visited
+        if (!visited[neighbor]) {
+          visited[neighbor] = true;
+          q.push_back(neighbor);
+
+        }
+      }
+    }
+  }
+
+  vector<int> BFS(int source, int V) {
+    vector<int> result;
     vector<bool> visited; // is the vetex added to the queue
     for (int i = 0; i < V; i++) {
       visited.push_back(false);
     }
 
-    visited[source] = true;
+    BFSConnectedGraph(source, V, visited, result);
 
-     int curVertex;
-     bool finished = false;
-     while (!finished) {
-       while (!q.empty()) {
-         curVertex = q.front();
-         result.push_back(curVertex);
-         q.pop_front();
-
-         vector<int> neighbors = adj[curVertex];
-         for (auto neighbor: neighbors) {
-           // not visited
-           if (!visited[neighbor]) {
-             visited[neighbor] = true;
-             q.push_back(neighbor);
-
-           }
-         }
-       }
-
-       finished = true;
-       for (int i = 0; i < V; i++) {
-         if (visited[i] == false) {
-           visited[i] = true;
-           q.push_back(i);
-           finished = false;
-           break;
-         }
-       }
-     }
+    for (int i = 0; i < V; i++) {
+      if (visited[i] == false) {
+        BFSConnectedGraph(i, V, visited, result);
+      }
+    }
     return result;
   }
 
