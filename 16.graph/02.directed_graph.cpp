@@ -83,4 +83,9 @@ class DirectedGraph {
 
     return result;
   }
+
+  bool IsCycle() {
+    vector<int> result = topologySorting();
+    return result.size() != V;
+  }
 };
