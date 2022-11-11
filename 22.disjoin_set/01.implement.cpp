@@ -11,6 +11,7 @@ class DisjointSet {
   private:
   int V; // number of element
   vector<int> parent;
+  vector<int> height;
 
   vector<int> getParent() {
     return parent;
@@ -22,6 +23,7 @@ class DisjointSet {
 
     for (int i = 0; i < V; i++) {
       parent.push_back(i);
+      height.push_back(0);
     }
   }
 
@@ -37,10 +39,18 @@ class DisjointSet {
   void unions(int u, int v) {
     int rootU = find(u);
     int rootV = find(v);
-    // already same group
+
     if (rootU == rootV) {
       return;
     }
-    parent[rootV] = rootU;
+
+    if (height[rootU] > height[rootV]) {
+      parent[rootV] = rootU;
+    } else if (height[rootV] > height[rootU]) {
+      parent[rootU] = rootV;
+    } else {
+      parent[rootV] = rootU;
+      height[rootU]++;
+    }
   }
 };

@@ -14,7 +14,7 @@ TEST_F(DisjointSetTest, MethodUninons) {
   int V;
   vector<int> parent;
 
-  V = 6;
+  V = 8;
   d = new DisjointSet(V);
 
   parent = d->getParent();
@@ -36,10 +36,18 @@ TEST_F(DisjointSetTest, MethodUninons) {
   parent = d->getParent();
   ASSERT_EQ(parent[3], 2);
 
-
   d->unions(3,4);
   parent = d->getParent();
   ASSERT_EQ(parent[0], 2);
+
+
+  d->unions(6,7);
+  parent = d->getParent();
+  ASSERT_EQ(parent[7], 6);
+
+  d->unions(5,6);
+  parent = d->getParent();
+  ASSERT_EQ(parent[5], 6);
 }
 
 
