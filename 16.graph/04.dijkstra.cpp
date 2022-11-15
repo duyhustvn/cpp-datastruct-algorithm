@@ -19,6 +19,21 @@ void printPQ(priority_queue<pair<int, int>, vector<pair<int, int>>, MyCmp> pq) {
   cout << endl;
 }
 
+void buildPath(unordered_map<int, int> parent, int source, int des) {
+  int findVer = des;
+  cout << "PATH: " << endl;
+  while (findVer != source) {
+    printf("%c <- ", findVer + 'a');
+    for (auto e: parent) {
+      if (e.first == findVer) {
+        findVer = e.second;
+        break;
+      }
+    }
+  }
+  printf("%c", findVer + 'a');
+  cout << endl;
+}
 
 unordered_map<int, int> initDistance(int V) {
   unordered_map<int, int> m;
@@ -51,6 +66,8 @@ void dijkstra(vector<vector<int>> graph, int V, int source, int destination) {
   // {C: 4} mean the distance from A to C is 4
   unordered_map<int, int> distance = initDistance(V);
 
+  unordered_map<int, int> parent;
+
   pq.push({source, 0});
 
   unordered_map<int, bool> visited;
@@ -74,6 +91,7 @@ void dijkstra(vector<vector<int>> graph, int V, int source, int destination) {
     // printf("%c: %d\n", curVertex + 'a', curPathSum);
 
     if (curVertex == destination) {
+      buildPath(parent, source, destination);
       return;
     }
 
@@ -83,6 +101,7 @@ void dijkstra(vector<vector<int>> graph, int V, int source, int destination) {
         if (pathSum < distance[j]) {
           pq.push({j, pathSum});
           distance[j] = pathSum;
+          parent[j] = curVertex;
         }
       }
     }
