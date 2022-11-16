@@ -19,11 +19,14 @@ void printPQ(priority_queue<pair<int, int>, vector<pair<int, int>>, MyCmp> pq) {
   cout << endl;
 }
 
-void buildPath(unordered_map<int, int> parent, int source, int des) {
+vector<int> buildPath(unordered_map<int, int> parent, int source, int des) {
+  vector<int> result;
+
   int findVer = des;
-  cout << "PATH: " << endl;
+  // cout << "PATH: " << endl;
   while (findVer != source) {
-    printf("%c <- ", findVer + 'a');
+    // printf("%c <- ", findVer + 'a');
+    result.push_back(findVer);
     for (auto e: parent) {
       if (e.first == findVer) {
         findVer = e.second;
@@ -31,8 +34,10 @@ void buildPath(unordered_map<int, int> parent, int source, int des) {
       }
     }
   }
-  printf("%c", findVer + 'a');
-  cout << endl;
+  // printf("%c", findVer + 'a');
+  result.push_back(findVer);
+  reverse(result.begin(), result.end());
+  return result;
 }
 
 unordered_map<int, int> initDistance(int V) {
@@ -43,7 +48,7 @@ unordered_map<int, int> initDistance(int V) {
   return m;
 }
 
-void dijkstra(vector<vector<int>> graph, int V, int source, int destination) {
+vector<int> dijkstra(vector<vector<int>> graph, int V, int source, int destination) {
   // graph is matrix
   //  [0,5,10,0],
   //  [5,0,3,20],
@@ -91,8 +96,7 @@ void dijkstra(vector<vector<int>> graph, int V, int source, int destination) {
     // printf("%c: %d\n", curVertex + 'a', curPathSum);
 
     if (curVertex == destination) {
-      buildPath(parent, source, destination);
-      return;
+      return buildPath(parent, source, destination);
     }
 
     for (int j = 0; j < V; j++) {
@@ -106,4 +110,6 @@ void dijkstra(vector<vector<int>> graph, int V, int source, int destination) {
       }
     }
   }
+
+  return {};
 }

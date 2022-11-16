@@ -13,6 +13,7 @@ TEST_F(DijkstraTest, MethodDijkstra) {
   struct TestData {
     int V;
     vector<vector<int>> graph;
+    vector<int> expectedResult;
   };
 
   vector<TestData> tests = {
@@ -20,29 +21,32 @@ TEST_F(DijkstraTest, MethodDijkstra) {
       6,
       {
         {0, 4, 2, 0, 0, 0},
-		{0, 0, 5, 10, 0, 0},
-		{0, 0, 0, 0, 3, 0},
-		{0, 0, 0, 0, 0, 11},
-		{0, 0, 0, 4, 0, 0},
-		{0, 0, 0, 0, 0, 0},
+        {0, 0, 5, 10, 0, 0},
+        {0, 0, 0, 0, 3, 0},
+        {0, 0, 0, 0, 0, 11},
+        {0, 0, 0, 4, 0, 0},
+        {0, 0, 0, 0, 0, 0},
       },
+      {0,2,4,3,5}
     },
     {
       6,
       {
         {0, 4, 2, 0, 0, 0},
-		{0, 0, 5, 2, 0, 0},
-		{0, 0, 0, 0, 3, 0},
-		{0, 0, 0, 0, 0, 11},
-		{0, 0, 0, 4, 0, 0},
-		{0, 0, 0, 0, 0, 0},
+        {0, 0, 5, 2, 0, 0},
+        {0, 0, 0, 0, 3, 0},
+        {0, 0, 0, 0, 0, 11},
+        {0, 0, 0, 4, 0, 0},
+        {0, 0, 0, 0, 0, 0},
       },
+      {0,1,3,5}
     }
   };
 
+  vector<int> actualResult;
   for (auto test: tests) {
-    dijkstra(test.graph, test.V, 0, 5);
-    cout << endl;
+    actualResult = dijkstra(test.graph, test.V, 0, 5);
+    ASSERT_EQ(actualResult, test.expectedResult);
   }
 }
 
