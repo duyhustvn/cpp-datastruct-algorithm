@@ -116,7 +116,7 @@ class UnDirectedGraph {
   }
 
 
-  bool IsCycleConnectedGraph(int source, int V, vector<bool> &visited, vector<int> &result) {
+  bool IsCycleConnectedGraphBFS(int source, int V, vector<bool> &visited, vector<int> &result) {
     deque<int> q;
     q.push_back(source);
     visited[source] = true;
@@ -147,7 +147,7 @@ class UnDirectedGraph {
     return countVertex == edges.size();
   }
 
-  bool IsCycle(int V) {
+  bool IsCycleBFS(int V) {
     vector<int> result;
     vector<bool> visited; // is the vetex added to the queue
     for (int i = 0; i < V; i++) {
@@ -156,7 +156,7 @@ class UnDirectedGraph {
     bool isContainCycle = false;
     for (int i = 0; i < V; i++) {
       if (visited[i] == false) {
-        isContainCycle = IsCycleConnectedGraph(i, V, visited, result);
+        isContainCycle = IsCycleConnectedGraphBFS(i, V, visited, result);
         if (isContainCycle) {
           return true;
         }
