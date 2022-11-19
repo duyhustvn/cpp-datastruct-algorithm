@@ -171,9 +171,14 @@ TEST_F(UnDirectedGraphTest, MethodIsCycle) {
 
   // graph->printGraph(6);
   realResult = graph->IsCycleBFS(V);
-
   expectedResult = true;
   ASSERT_EQ(realResult, expectedResult);
+
+  realResult = graph->IsCycleDFS(V);
+  expectedResult = true;
+  ASSERT_EQ(realResult, expectedResult);
+
+
 
   V = 9;
   graph = new UnDirectedGraph(V);
@@ -192,9 +197,13 @@ TEST_F(UnDirectedGraphTest, MethodIsCycle) {
 
   // graph->printGraph(6);
   realResult = graph->IsCycleBFS(V);
-
   expectedResult = false;
   ASSERT_EQ(realResult, expectedResult);
+
+  realResult = graph->IsCycleDFS(V);
+  expectedResult = true;
+  ASSERT_EQ(realResult, expectedResult);
+
 
 
   V = 9;
@@ -215,7 +224,10 @@ TEST_F(UnDirectedGraphTest, MethodIsCycle) {
 
   // graph->printGraph(6);
   realResult = graph->IsCycleBFS(V);
+  expectedResult = true;
+  ASSERT_EQ(realResult, expectedResult);
 
+  realResult = graph->IsCycleDFS(V);
   expectedResult = true;
   ASSERT_EQ(realResult, expectedResult);
 }

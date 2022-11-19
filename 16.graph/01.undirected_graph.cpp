@@ -115,6 +115,34 @@ class UnDirectedGraph {
     return result;
   }
 
+  bool IsCycleConnectedGraphDFS(int source, vector<bool>& visited, int parent) {
+    visited[source] = true;
+    for (auto neighbor: adj[source]) {
+      if (!visited[neighbor]) {
+        if (IsCycleConnectedGraphDFS(neighbor, visited, source) == true) {
+          return true;
+        }
+      }
+      else if (parent != neighbor) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool IsCycleDFS(int V) {
+    vector<bool> visited(V, false);
+
+    for (int i = 0; i < V; i++) {
+      if (!visited[i]) {
+        if (IsCycleConnectedGraphDFS(i, visited, -1)) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
 
   bool IsCycleConnectedGraphBFS(int source, int V, vector<bool> &visited, vector<int> &result) {
     deque<int> q;
@@ -164,4 +192,6 @@ class UnDirectedGraph {
     }
     return false;
   }
+
+
 };
