@@ -34,7 +34,9 @@ int main() {
   // Common programming error: z = e is wrong because an array name can never
   // occur on the left-hand side of =.
   // You cannot reassign the array name to point to a different memory location
-  // struct employee *z[3] = ems;
+  // This assignment is not allowed in C because it attempts to change the
+  // memory address that z points to. In C, you cannot reassign the array name
+  // to point to a different memory location. struct employee *z[3] = ems;
 
   printf("%u\n", p);
   printf("%u\n", q);
