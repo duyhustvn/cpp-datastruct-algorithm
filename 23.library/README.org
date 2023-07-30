@@ -1,0 +1,25 @@
+#+title: How to create library
+
+* Static library
+- Create 2 file *01.lib_static.h* and *01.lib_static.c*
+- Generate object file
+  #+begin_src sh
+    gcc -c 01.lib_static.c -o 01.lib_static.o
+  #+end_src
+- Create static library
+  #+begin_src sh
+    ar rcs 01.lib_static.a 01.lib_static.o
+  #+end_src
+- Create file *01.client.c*
+- Generate object file for the client program
+  #+begin_src sh
+    gcc -c 01.client.c -o 01.client.o
+  #+end_src
+- Link the library with client program
+  #+begin_src sh
+    gcc 01.client.c -L. -l:01.lib_static.a -o 01.client.out
+  #+end_src
+- Execute the client program
+  #+begin_src sh
+    ./01.client.out
+  #+end_src
