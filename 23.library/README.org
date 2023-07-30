@@ -2,24 +2,43 @@
 
 * Static library
 - Create 2 file *01.lib_static.h* and *01.lib_static.c*
+
 - Generate object file
   #+begin_src sh
     gcc -c 01.lib_static.c -o 01.lib_static.o
   #+end_src
+
 - Create static library
   #+begin_src sh
     ar rcs 01.lib_static.a 01.lib_static.o
   #+end_src
 - Create file *01.client.c*
+
 - Generate object file for the client program
   #+begin_src sh
     gcc -c 01.client.c -o 01.client.o
   #+end_src
+
 - Link the library with client program
   #+begin_src sh
     gcc 01.client.c -L. -l:01.lib_static.a -o 01.client.out
   #+end_src
+  - Let's break down the command:
+    - gcc: The command to invoke the GNU Compiler Collection.
+    - client.c: The C source file that you want to compile. Replace client.c with the actual name of your C source file.
+    - -L.: This option tells the linker to look for libraries in the current directory (.) during the linking process. The -L flag is followed by the path to the directory containing libraries, and in this case, it's set to the current directory.
+    - -l:01.lib_static.a: This option is used to link against a specific library named 01.lib_static.a. The -l flag is followed by the name of the library you want to link. Note that we use a colon (:) between -l and the library name to specify that the library name includes a dot (.) in its actual filename. By default, the -l flag expects the library name without the lib prefix and the .a (or .so for shared libraries) extension. Using the colon, we can provide the exact library filename.
+    - -o client: This is an optional parameter specifying the name of the output executable. In this case, it sets the output filename to client. If not provided, the default name would be "a.out".
+    - Make sure that 01.lib_static.a exists in the current directory (or the directory specified by -L) for this command to work. Additionally, check that you have the necessary header files and functions declarations corresponding to the library in your client.c source file.
+  - In case
+    #+begin_src sh
+        gcc 01.client.c -L. -lstatic -o 01.client.out
+    #+end_src
+    - -lstatic: This option is used to link against a specific library named libstatic.a. The -l flag is followed by the name of the library you want to link. The linker will look for a file named libstatic.a in the directories specified by the -L option.
+      - Note: The naming convention for the -l flag is such that it expects the library name without the lib prefix and the .a (or .so for shared libraries) extension. For example, if you have a library called libmystatic.a, you would use -lmystatic with the -l flag.
+      - Make sure that libstatic.a exists in the current directory (or the directory specified by -L) for this to work.
+
 - Execute the client program
-  #+begin_src sh
+  ,#+begin_src sh
     ./01.client.out
   #+end_src
