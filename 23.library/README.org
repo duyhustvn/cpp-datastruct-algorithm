@@ -12,6 +12,12 @@
   #+begin_src sh
     ar rcs 01.lib_static.a 01.lib_static.o
   #+end_src
+  - The command creates a static library named 01.lib_static.a by archiving the object file 01.lib_static.o using the ar (archiver) utility in Unix-like systems.
+    - The *ar* command is used to create, modify, and extract from archives, which are collections of files bundled together into a single file. In this case, we are using ar to create an archive.
+    - *r*: This flag tells ar to insert the object file 01.lib_static.o into the archive
+    - *c*: This flag creates the archive file 01.lib_static.a if it does not already exist
+    - *s*: This flag adds an index to the archive, making it a symbol table. This index improves the efficiency of searching for symbols (functions, variables, etc.) in the archive. It allows the linker to find symbols quickly when linking against this static library.
+
 - Create file *01.client.c*
 
 - Generate object file for the client program
@@ -41,4 +47,33 @@
 - Execute the client program
   ,#+begin_src sh
     ./01.client.out
+  #+end_src
+
+* Dynamic library
+- create 2 file *02.lib_dynamic.h* and *02.lib_dynamic.c*
+
+- create an object file
+  #+begin_src sh
+    gcc -Wall -fPIC -c 02.lib_dynamic.c
+  #+end_src
+ a file name *02.lib_dynmic.o* will be generated
+
+- create a shared object
+  #+begin_src sh
+    gcc -shared -Wl,-soname,02.lib_dynamic.so -o 02.lib_dynamic.so 02.lib_dynamic.o
+  #+end_src
+
+- add the path of the library to the environment variable
+  #+begin_src sh
+    export LD_LIBRARY_PATH=$PWD:$LD_LIBRARY_PATH
+  #+end_src
+
+- Compile the client program and link the library
+  #+begin_src sh
+    gcc 02.client.c -L. -l:02.lib_dynamic.so -o 02.client.out
+  #+end_src
+
+- Run program
+  #+begin_src sh
+    ./02.client.out
   #+end_src
