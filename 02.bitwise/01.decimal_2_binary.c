@@ -12,8 +12,12 @@ void revertString(char *str, int n) {
   }
 }
 
-char *decimal2Binary(int n) {
+// Time complexity: O(log2(n))
+// Space complexity: O(log2(n))
+char *decimal2BinaryUsingRSA(int n) {
+  // Using Right Shift (>>) and And(&)
   char *res = (char *)malloc(32 * sizeof(char));
+
   if (n == 0) {
     return "0";
   }
@@ -29,6 +33,27 @@ char *decimal2Binary(int n) {
     i++;
   }
   revertString(res, i);
+
+  return res;
+}
+
+// Time complexity: O(log2(n))
+// space complexity: O(1)
+char *decimal2BinaryUsingBitwise(int n) {
+  // Using Bitwise only work with fixed binary length
+  // assuming 32-bit integer
+  char *res = (char *)malloc(32 * sizeof(char));
+
+  for (int i = 31; i >= 0; i--) {
+    int mask = (1 << i);
+
+    if (n & mask) {
+      res[i] = '1';
+    } else {
+      res[i] = '0';
+    }
+  }
+  revertString(res, 32);
 
   return res;
 }

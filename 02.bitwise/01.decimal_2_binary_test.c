@@ -24,8 +24,14 @@ static void test_decimal_2_binary(void **state) {
 
   for (int i = 0; i < n; i++) {
     struct Tests test = tests[i];
-    char *res = decimal2Binary(test.n);
+    char *res = decimal2BinaryUsingRSA(test.n);
     assert_string_equal(res, test.expectedBinary);
+  }
+
+  for (int i = 0; i < n; i++) {
+    struct Tests test = tests[i];
+    char *res = decimal2BinaryUsingBitwise(test.n);
+    printf("res: %s\n", res);
   }
 }
 
