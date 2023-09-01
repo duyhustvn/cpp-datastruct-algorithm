@@ -27,3 +27,23 @@ int countSetBitV2(int n) {
 
   return count;
 }
+
+// Time complexity: O(1)
+// Space complexity: O(1)
+int countSetBitV3(int n) {
+  int table[256];
+
+  for (int i = 0; i < 256; i++) {
+    table[i] = (i & 1) + table[i >> 1];
+  }
+
+  int maxBit = log2(n);
+  int group = maxBit / 8;
+
+  int count = 0;
+  for (int i = 0; i <= n; i++) {
+    count += table[n & 0xff]; // 0xff = 1111.1111
+    n = n >> 8;
+  }
+  return count;
+}

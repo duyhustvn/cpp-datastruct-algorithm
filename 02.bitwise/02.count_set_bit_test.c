@@ -14,8 +14,8 @@ static void test_count_set_bit(void **state) {
     int expected;
   };
 
-  struct Test tests[] = {{0, 0}, {1, 1}, {2, 1}, {3, 2},    {4, 1},
-                         {5, 2}, {6, 2}, {7, 3}, {1024, 1}, {37, 3}};
+  struct Test tests[] = {{0, 0}, {1, 1}, {2, 1},  {3, 2},   {4, 1},   {5, 2},
+                         {6, 2}, {7, 3}, {37, 3}, {255, 8}, {1024, 1}};
 
   int n = sizeof(tests) / sizeof(struct Test);
 
@@ -26,6 +26,9 @@ static void test_count_set_bit(void **state) {
 
     int numBitV2 = countSetBitV2(test.n);
     assert_int_equal(numBitV2, test.expected);
+
+    int numBitV3 = countSetBitV3(test.n);
+    assert_int_equal(numBitV3, test.expected);
   }
 }
 
