@@ -1,10 +1,10 @@
 ## Requirement 
-- google test [http://google.github.io/googletest/][PlDb]
+- google test [https://github.com/google/googletest/blob/main/googletest/README.md]
 
 ## Run the test 
 ### C++ with gtest
 ```
-g++ -std=c++14 -lgtest -o hello_test.out hello_test.cpp
+g++ -std=c++23 -o hello_test.out hello_test.cpp -lgtest
 ```
 
 ### C with Cmocka
